@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no"/>
+    <meta name="renderer" content="webkit"/>
+    <link rel="manifest" href="manifest.json">
+
+    <link rel="stylesheet" href="res/mdui/mdui.css">
+    <script src="res/mdui/mdui.global.js"></script>
+    <link href="https://use.sevencdn.com/icon?family=Material+Icons" rel="stylesheet">
+
+    <script src="https://unpkg.com/vconsole@latest/dist/vconsole.min.js"></script>
+    <script>
+      console.log('我喜欢你');
+      // var vConsole = new VConsole();
+
+      if (localStorage.getItem('New')) {
+        console.warn('用户不是新手！');
+      }
+      else {
+        console.warn('用户是新手！');
+        localStorage.setItem('New', 'No');
+      }
+
+      function settingsRest() {
+        if (localStorage.getItem('AddId')) {}
+        else {
+          localStorage.setItem('AddId','4');
+        }
+        if (localStorage.getItem('AferId')) {}
+        else {
+          localStorage.setItem('AfterId','2');
+        }
+      };
+
+      function setAddId(id) {
+        localStorage.setItem('AddId',id);
+      };
+
+      function setAfter(id) {
+        localStorage.setItem('AfterId',id);
+      }
+
+      var ReqApiCd = 0;
+      function ReqApiRoom(rf, ri , sn) {
+        if (ReqApiCd == 1) {
+          mdui.snackbar({message:'别急！'});
+          return 0;
+        }
+        mdui.snackbar({message:'即将广播游戏！请不要着急！'});
+        ReqApiCd = 1;
+        const joinapi = new XMLHttpRequest();
+        if (localStorage.getItem('AddId')){}
+        else{
+          localStorage.setItem('AddId','4');
+        }
+        const ai = localStorage.getItem('AddId');
+        const joinurl = `https://api.miaaoo.com/join?roomfrom=${rf}&roomid=${ri}&sessionname=${sn}&addid=${ai}`;
+        console.warn(`加入联机${joinurl}，即将请求`);
+        joinapi.open('POST', joinurl);
+        joinapi.onreadystatechange = function () {
+          if (joinapi.readyState === 4 && joinapi.status === 200 || joinapi.status === 201) {
+            console.warn('成功！');
+            mdui.snackbar({message:'广播游戏成功！请返回游戏查看！'});
+            ReqApiCd = 0;
+            const AfterB = localStorage.getItem('AfterId');
+            if (AfterB == '3') {
+              window.open('minecraft://')
+            }
+          }
+          else {
+            console.error(joinapi.readyState);
+            console.error(joinapi.status);
+            ReqApiCd = 0;
+          }
+        };
+        joinapi.send(JSON.stringify({ key: 'value' }));// 请求体数据，根据实际情况修改
+      };
+
+      function ReqApiMc() {
+        const xhr = new XMLHttpRequest();
+        xhr.open('POST', 'https://api.miaaoo.com/list', true);
+        xhr.onreadystatechange = function () {
+          if (xhr.readyState === 4 && xhr.status === 200) {
+            console.info('加载成功！');
+            const ApiJs = JSON.parse(xhr.responseText);
+            const WorldNum = ApiJs.results.length;
+            const WorldNumTips = document.querySelector('.wnt');
+            WorldNumTips.textContent = WorldNum;
+
+            const RoomListEle = document.querySelector('.roomlist')
+            ApiJs.results.forEach((item) => {
+              if(item.customProperties.BroadcastSetting == 3) {
+                const Room = document.createElement('mdui-card');
+                Room.style = 'width: 100%; --shape-corner: 0;';
+                Room.variant = 'outlined';
+                Room.innerHTML = `
+                                  <h2>${item.customProperties.worldName}</h2>
+                                  <p> - ${item.customProperties.hostName} | ${item.customProperties.worldType}</p>
+                                  <p> - ${item.customProperties.version} [${item.customProperties.MemberCount}/${item.customProperties.MaxMemberCount}]</p>
+                                  <mdui-linear-progress value="${item.customProperties.MemberCount}" max="${item.customProperties.MaxMemberCount}"></mdui-linear-progress>
+                                  <mdui-segmented-button-group full-width>
+                                    <mdui-segmented-button onclick="ReqApiRoom('${item.roomfrom}','${item.id}','${item.sessionRef.name}')">加入</mdui-segmented-button>
+                                  </mdui-segmented-button-group>
+                                  `;
+                RoomListEle.appendChild(Room);
+                console.info(`[V] ${item.customProperties.worldName} 可加入！`);
+              }
+              else {
+                console.info(`[X] ${item.customProperties.worldName} 不可加入！`)
+              }
+            });
+          }
+        };
+        xhr.send();
+      }
+      ReqApiMc();
+      settingsRest();
+    </script>
+    <title>FriendLink | Index</title>
+  </head>
+  <body>
+    <mdui-top-app-bar style="position: relative;overflow: hidden">
+      <mdui-top-app-bar-title>[ FriendLink ]</mdui-top-app-bar-title>
+      <div style="flex-grow: 1"></div>
+      <mdui-button-icon icon="home"></mdui-button-icon>
+    </mdui-top-app-bar>
+    <mdui-tabs value="home" full-width>
+      <mdui-tab value="home" icon="home"> 主页 </mdui-tab>
+      <mdui-tab value="link" icon="link"> 联机 </mdui-tab>
+      <mdui-tab value="info" icon="settings"> 设置 </mdui-tab>
+
+      <mdui-tab-panel slot="panel" value="home">
+        <mdui-linear-progress></mdui-linear-progress>
+        <img src="res/image/hbg.jpeg" alt="Pulpit rock" width="100%" height="100%">
+        <div>
+          <h1># 🌹 欢迎来到友联！</h1>
+          <mdui-button icon="book" href="noob.html">文档</mdui-button>
+          <mdui-button icon="code" href="noob.html">开源</mdui-button>
+        </div>
+        <mdui-linear-progress></mdui-linear-progress>
+      </mdui-tab-panel>
+      <mdui-tab-panel slot="panel" value="link">
+        <h1>联机<mdui-badge class='wnt'>加载中...</mdui-badge></h1>
+        <div class='roomlist'></div>
+      </mdui-tab-panel>
+      <mdui-tab-panel slot="panel" value="info">
+      <mdui-select label="广播设置" helper="您是哪个用户的游戏好友" id='AddIdSet'>
+        <mdui-menu-item value="2" onclick="setAddId('2')">MultiMC23</mdui-menu-item>
+        <mdui-menu-item value="3" onclick="setAddId('3')">gouhope</mdui-menu-item>
+        <mdui-menu-item value="4" onclick="setAddId('4')">HelloMC25</mdui-menu-item>
+      </mdui-select>
+			<mdui-select label="广播游戏后选项" helper="在广播完游戏后的行为" id='AfterSet'>
+        <mdui-menu-item value="2" onclick="setAfter('2')">无任何操作</mdui-menu-item>
+        <mdui-menu-item value="3" onclick="setAfter('3')">启动我的世界</mdui-menu-item>
+        <mdui-menu-item value="4" onclick="setAfter('4')">启动迷你世界</mdui-menu-item>
+      </mdui-select>
+      </mdui-tab-panel>
+  </body>
+</html>

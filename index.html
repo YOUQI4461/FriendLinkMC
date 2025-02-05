@@ -23,6 +23,16 @@
         localStorage.setItem('New', 'No');
       }
 
+      function youDebug() {
+        console.warn('我喜欢你')
+        const userDebug = document.querySelector('.Debug');
+        const userDebugName = userDebug.value;
+        console.warn(userDebugName);
+        if(userDebugName == 'Console'){
+          const vConsole = new VConsole();
+        }
+      }
+ 
       function settingsRest() {
         if (localStorage.getItem('AddId')) {}
         else {
@@ -156,6 +166,9 @@
         <mdui-menu-item value="3" onclick="setAfter('3')">启动我的世界</mdui-menu-item>
         <mdui-menu-item value="4" onclick="setAfter('4')">启动迷你世界</mdui-menu-item>
       </mdui-select>
+      <mdui-text-field label="Debug" class='Debug'>
+        <mdui-button-icon slot="end-icon" icon="done" onclick="youDebug()"></mdui-button-icon>
+      </mdui-text-field>
       </mdui-tab-panel>
   </body>
 </html>

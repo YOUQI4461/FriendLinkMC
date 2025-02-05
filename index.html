@@ -13,6 +13,9 @@
     <script src="https://unpkg.com/vconsole@latest/dist/vconsole.min.js"></script>
     <script>
       console.log('我喜欢你');
+      if (localStorage.getItem('vConsole') === 'Yes') {
+        var vConsole = new VConsole();
+      }
       // var vConsole = new VConsole();
 
       if (localStorage.getItem('New')) {
@@ -30,6 +33,7 @@
         console.warn(userDebugName);
         if(userDebugName == 'Console'){
           const vConsole = new VConsole();
+          localStorage.setItem('vConsole','Yes');
         }
       }
  
@@ -143,7 +147,7 @@
   </head>
   <body>
     <mdui-top-app-bar style="position: relative;overflow: hidden">
-      <mdui-top-app-bar-title><h1>[ FriendLink ]</h1></mdui-top-app-bar-title>
+      <mdui-top-app-bar-title>[ FriendLink ]<sup> V0.0.1</sup></mdui-top-app-bar-title>
       <div style="flex-grow: 1"></div>
       <mdui-button-icon icon="home"></mdui-button-icon>
     </mdui-top-app-bar>

@@ -120,10 +120,9 @@
                 const Room = document.createElement('mdui-card');
                 Room.style = 'width: 100%; --shape-corner: 0;';
                 Room.variant = 'outlined';
-                mdui.setTheme('dark',Room)
                 const roomName = mcToHtml(item.customProperties.worldName)
                 Room.innerHTML = `
-                                  <h2>${roomName}</h2>
+                                  <h2 class='mdui-theme-dark'>${roomName}</h2>
                                   <p> - ${item.customProperties.hostName} | ${item.customProperties.worldType}</p>
                                   <p> - ${item.customProperties.version} [${item.customProperties.MemberCount}/${item.customProperties.MaxMemberCount}]</p>
                                   <mdui-linear-progress value="${item.customProperties.MemberCount}" max="${item.customProperties.MaxMemberCount}"></mdui-linear-progress>

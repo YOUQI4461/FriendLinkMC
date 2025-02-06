@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="zh-CN">
+<html lang="zh-CN" class="mdui-theme-auto">
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no"/>
@@ -11,6 +11,7 @@
     <link href="https://use.sevencdn.com/icon?family=Material+Icons" rel="stylesheet">
 
     <script src="https://unpkg.com/vconsole@latest/dist/vconsole.min.js"></script>
+    <script src='res/mcToHtml.js'></script>
     <script>
       console.log('我喜欢你');
       if (localStorage.getItem('vConsole') === 'Yes') {
@@ -112,8 +113,9 @@
                 const Room = document.createElement('mdui-card');
                 Room.style = 'width: 100%; --shape-corner: 0;';
                 Room.variant = 'outlined';
+                const roomName = mcToHtml(item.customProperties.worldName)
                 Room.innerHTML = `
-                                  <h2>${item.customProperties.worldName}</h2>
+                                  <h2>${roomName}</h2>
                                   <p> - ${item.customProperties.hostName} | ${item.customProperties.worldType}</p>
                                   <p> - ${item.customProperties.version} [${item.customProperties.MemberCount}/${item.customProperties.MaxMemberCount}]</p>
                                   <mdui-linear-progress value="${item.customProperties.MemberCount}" max="${item.customProperties.MaxMemberCount}"></mdui-linear-progress>

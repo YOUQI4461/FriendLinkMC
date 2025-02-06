@@ -47,6 +47,8 @@
         else {
           localStorage.setItem('AfterId','2');
         }
+        const theTheme = localStorage.getItem('Theme');
+        mdui.setTheme(theTheme)
       };
 
       function setAddId(id) {
@@ -55,6 +57,11 @@
 
       function setAfter(id) {
         localStorage.setItem('AfterId',id);
+      }
+
+      function setTheme(th) {
+        mdui.setTheme(th);
+        localStorage.setItem('Theme',th)
       }
 
       var ReqApiCd = 0;
@@ -113,6 +120,7 @@
                 const Room = document.createElement('mdui-card');
                 Room.style = 'width: 100%; --shape-corner: 0;';
                 Room.variant = 'outlined';
+                Room.class = 'mdui-theme-dark'
                 const roomName = mcToHtml(item.customProperties.worldName)
                 Room.innerHTML = `
                                   <h2>${roomName}</h2>
@@ -187,6 +195,11 @@
         <mdui-menu-item value="3" onclick="setAfter('3')">启动我的世界</mdui-menu-item>
         <mdui-menu-item value="4" onclick="setAfter('4')">启动迷你世界</mdui-menu-item>
       </mdui-select>
+      <mdui-segmented-button-group full-width>
+        <mdui-segmented-button onclick="setTheme('light')">亮色主题</mdui-segmented-button>
+        <mdui-segmented-button onclick="setTheme('dark')">暗色主题</mdui-segmented-button>
+        <mdui-segmented-button onclick="setTheme('auto')">自动改变</mdui-segmented-button>
+      </mdui-segmented-button-group>
       <mdui-text-field label="Debug" class='Debug'>
         <mdui-button-icon slot="end-icon" icon="done" onclick="youDebug()"></mdui-button-icon>
       </mdui-text-field>

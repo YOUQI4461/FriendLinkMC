@@ -105,6 +105,7 @@
         joinapi.send(JSON.stringify({ key: 'value' }));// 请求体数据，根据实际情况修改
       };
  
+      var canJoinRoom = 0;
       function ReqApiMc() {
         const xhr = new XMLHttpRequest();
         xhr.open('POST', 'https://api.miaaoo.com/list', true);
@@ -114,11 +115,10 @@
             const ApiJs = JSON.parse(xhr.responseText);
             const WorldNum = ApiJs.results.length;
             const WorldNumTips = document.querySelector('.wnt');
-            WorldNumTips.textContent = WorldNum;
-
             const RoomListEle = document.querySelector('.roomlist')
             ApiJs.results.forEach((item) => {
               if(item.customProperties.BroadcastSetting == 3) {
+                canJoinRoom = canJoinRoom + 1;
                 const Room = document.createElement('mdui-card');
                 Room.style = 'width: 100%; --shape-corner: 0;';
                 Room.variant = 'outlined';
@@ -139,6 +139,7 @@
                 console.info(`[X] ${item.customProperties.worldName} 不可加入！`)
               }
             });
+            WorldNumTips.innerHTML = `${canJoinRoom}/${WorldNum}`;
           }
         };
         xhr.send();

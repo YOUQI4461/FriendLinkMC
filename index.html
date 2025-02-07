@@ -8,14 +8,16 @@
 
     <link rel="stylesheet" href="res/mdui/mdui.css">
     <script src="res/mdui/mdui.global.js"></script>
-    <link href="https://use.sevencdn.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://fonts.loli.net/icon?family=Material+Icons" rel="stylesheet">
 
     <script src="https://unpkg.com/vconsole@latest/dist/vconsole.min.js"></script>
+    <script src="res/eruda/eruda.js"></script>
     <script src='res/mcToHtml.js'></script>
     <script>
       console.log('我喜欢你');
       if (localStorage.getItem('vConsole') === 'Yes') {
         var vConsole = new VConsole();
+        eruda.init();
       }
       // var vConsole = new VConsole();
 
